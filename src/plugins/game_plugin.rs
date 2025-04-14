@@ -3,9 +3,10 @@ use crate::{
     resources::WaitingTimer,
     states::GameState,
     systems::{
-        selection::*,
         countdown::*,
-        winner::*,
+        countdown_visuals::*,
+        selection::*,
+        winner::*
     }
 };
 
@@ -36,9 +37,20 @@ impl Plugin for GameFlowPlugin {
             ))
 
             // --------------- Beginning Countdown ----------------
-            .add_systems(OnEnter(GameState::Countdown), setup_countdown)
-            .add_systems(Update, update_countdown.run_if(in_state(GameState::Countdown)))
-            .add_systems(OnExit(GameState::Countdown), cleanup_countdown)
+            .add_systems(
+                OnEnter(GameState::Countdown),
+                (setup_countdown, setup_countdown_rings)
+            )
+            .add_systems(
+                Update,
+                (update_countdown, animate_countdown_rings).run_if(
+                    in_state(GameState::Countdown)
+                )
+            )
+            .add_systems(
+                OnExit(GameState::Countdown),
+                (cleanup_countdown, cleanup_countdown_visuals)
+            )
 
             // --------------- Finding Winner --------------------
             .add_systems(
