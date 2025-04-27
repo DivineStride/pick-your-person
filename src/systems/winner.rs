@@ -1,3 +1,5 @@
+use std::fs::exists;
+
 use bevy::prelude::*;
 use rand::prelude::*;
 
@@ -53,15 +55,24 @@ pub fn check_winner_timer(
 
 
 pub fn highlight_winner(
-    mut query: Query<(&Finger, &mut Transform, &mut Sprite), With<Winner>>,
+    mut query: Query<(&Finger, &mut Transform), With<Winner>>,
     time: Res<Time>,
 
 ) {
-    for (finger, mut transform, mut sprite) in query.iter_mut() {
+    for (finger, mut transform) in query.iter_mut() {
         let scale = 1.0 + (time.elapsed_secs().sin() * 0.2 + 0.2);
         transform.scale = Vec3::new(scale, scale, 1.0);
 
-        sprite.color = finger.color.with_luminance(1.0);
+        finger.color.with_luminance(1.0);
+    }
+}
+
+pub fn cleanup_non_winners(
+    mut commands: Commands,
+    mut query: Query<(Entity, &Finger), Without<Winner>>
+) {
+    for (entity, _) in query.iter_mut() {
+        commands.entity(entity).despawn();
     }
 }
 

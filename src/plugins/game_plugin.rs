@@ -3,10 +3,7 @@ use crate::{
     resources::WaitingTimer,
     states::GameState,
     systems::{
-        countdown::*,
-        countdown_visuals::*,
-        selection::*,
-        winner::*
+        countdown::*, countdown_visuals::*, selection::*, victory::*, winner::*
     }
 };
 
@@ -43,7 +40,7 @@ impl Plugin for GameFlowPlugin {
             )
             .add_systems(
                 Update,
-                (update_countdown, animate_countdown_rings).run_if(
+                (update_countdown, animate_countdown_rings, animate_glow_points).run_if(
                     in_state(GameState::Countdown)
                 )
             )
@@ -55,18 +52,30 @@ impl Plugin for GameFlowPlugin {
             // --------------- Finding Winner --------------------
             .add_systems(
                 OnEnter(GameState::WinnerChickenDinner), 
-                (select_winner, setup_winner_timer)
+                (
+                    (
+                        select_winner,
+                        setup_winner_timer
+                    ).before(setup_victory_background),
+                    setup_victory_background
+                )
             )
             .add_systems(
                 Update,
                 (
-                    highlight_winner,
-                    check_winner_timer
+                    animate_victory_background,
+                    cleanup_non_winners,
+                    (
+                        highlight_winner,
+                        check_winner_timer,
+                    )
+                        .before(animate_victory_background)
+                        .before(cleanup_non_winners),
                 ).run_if(in_state(GameState::WinnerChickenDinner))
             )
             .add_systems(
                 OnExit(GameState::WinnerChickenDinner),
-                cleanup_winner
+                (cleanup_winner, cleanup_victory_background),
             );
     }
 }

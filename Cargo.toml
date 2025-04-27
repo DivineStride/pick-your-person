@@ -1,7 +1,7 @@
 [package]
 name = "those_goes"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [profile.dev]
 opt-level = 1
@@ -10,5 +10,5 @@ opt-level = 1
 opt-level = 3
 
 [dependencies]
-bevy = "0.15.3"
+bevy = "0.16.0"
 rand = "0.9.0"
