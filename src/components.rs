@@ -8,9 +8,7 @@ pub struct Finger {
 
 #[derive(Component)]
 pub struct CountdownRing {
-    pub radius: f32,
     pub progress: f32,
-    pub complete: bool,
 }
 
 #[derive(Component)]

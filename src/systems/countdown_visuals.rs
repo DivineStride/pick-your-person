@@ -59,7 +59,6 @@ pub fn setup_countdown_rings(
 }
 
 pub fn animate_countdown_rings(
-    time: Res<Time>,
     countdown: Res<CountdownTimer>,
     mut ring_query: Query<(&mut CountdownRing, &MeshMaterial2d<CountdownMaterial>)>,
     mut materials: ResMut<Assets<CountdownMaterial>>,

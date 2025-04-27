@@ -1,4 +1,3 @@
-#import bevy_pbr::utils
 #import bevy_sprite::mesh2d_vertex_output::VertexOutput
 
 @group(2) @binding(0)

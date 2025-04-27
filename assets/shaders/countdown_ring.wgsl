@@ -1,6 +1,3 @@
-#import bevy_sprite::mesh2d_view_bindings
-#import globals
-#import bevy_pbr::utils
 #import bevy_sprite::mesh2d_vertex_output::VertexOutput
 
 const PI = radians(180.0);
